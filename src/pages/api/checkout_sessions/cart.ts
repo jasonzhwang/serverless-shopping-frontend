@@ -54,6 +54,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         requestOptions as any
       );
 
+      // Include the Bearer authorization header in the response
+      res.setHeader("Authorization", `Bearer ${process.env.STRIPE_SECRET_KEY}`);
       res.status(200).json(checkoutSession);
     } catch (err) {
       console.log(err);
