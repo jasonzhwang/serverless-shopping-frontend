@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } catch (err) {
       console.log(err);
       const errorMessage = err instanceof Error ? err.message : "Internal server error";
-      res.status(500).json({ statusCode: 500, message: errorMessage });
+      res.status(500).send(errorMessage); // Send the error message as plain text
     }
   } else {
     res.setHeader("Allow", "POST");
