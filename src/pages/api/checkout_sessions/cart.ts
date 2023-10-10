@@ -41,8 +41,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         metadata: { orderId: orderId },
       };
 
+      // Set the Authorization header with your Stripe API key
+      const requestOptions = {
+        headers: {
+          Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+      };
+
       const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.create(
-        params
+        params,
+        requestOptions as any
       );
 
       res.status(200).json(checkoutSession);
