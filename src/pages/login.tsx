@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 // Define the types for setUserId and setToken
 type SetUserIdFunction = (userId: string) => void;
 type SetTokenFunction = (token: string) => void;
 
-//PostData component
-const postData = async (data: any, setUserId: SetUserIdFunction, setToken: SetTokenFunction) => {
+// PostData component
+const postData = async (
+  data: any,
+  setUserId: SetUserIdFunction,
+  setToken: SetTokenFunction,
+  router: any // Pass the router as an argument
+) => {
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
   if (!apiUrl) {
     // Handle the case where the API URL is not defined
     return console.error("BACKEND_API_URL is not defined.");
   }
+
   try {
     const response = await fetch(`${apiUrl}/login`, {
       method: "POST",
@@ -21,10 +28,14 @@ const postData = async (data: any, setUserId: SetUserIdFunction, setToken: SetTo
       },
       body: JSON.stringify(data),
     });
+
     const responseData = await response.json();
     setUserId(responseData.user);
     setToken(responseData.token);
     console.log(responseData.user, responseData.token);
+
+    // Redirect to the "use-shopping-cart" page on successful login
+    router.push("/use-shopping-cart"); // Use the router passed as an argument
   } catch (error) {
     console.log(error);
   }
@@ -35,26 +46,29 @@ export default function SignInPage() {
   const [token, setToken] = useState("");
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const router = useRouter(); // Use the useRouter hook here
 
   useEffect(() => {
     localStorage.setItem("userId", userId);
     localStorage.setItem("token", token);
   }, [userId, token]);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    postData(
+    await postData(
       {
         email: email,
         password: pwd,
       },
       setUserId,
-      setToken
+      setToken,
+      router // Pass the router to the postData function
     );
     console.log(userId, token);
   };
+
   return (
-    <div className="text-center m-5-auto">
+    <div className="m-5-auto text-center">
       <h2>Sign in to us</h2>
       <form method="post" className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
         <p>

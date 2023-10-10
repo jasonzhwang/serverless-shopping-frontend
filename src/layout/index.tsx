@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer/Footer";
-import { useSession } from "next-auth/react";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [logon, setLogon] = useState(false);
   const backgroundStyle = {
     backgroundImage: `url('/bg.png')`, // Replace 'bg.png' with your actual image path
     backgroundSize: "cover",
@@ -11,13 +11,17 @@ const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
     backgroundPosition: "center",
     height: "100vh",
     display: "flex",
+    justifyContent: "center",
   };
 
-  const { data: session } = useSession();
+  useEffect(() => {
+    setLogon(localStorage.getItem("userId") != "" ? true : false);
+  }, []);
+
   return (
     <section>
       <div className="absolute top-0 w-full text-center">
-        <Header session={session} />
+        <Header logon={logon} />
       </div>
       <main style={backgroundStyle}>{children}</main>
       <Footer />

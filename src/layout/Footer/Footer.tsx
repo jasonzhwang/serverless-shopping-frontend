@@ -13,7 +13,7 @@ const FooterStyle: React.CSSProperties = {
 const Footer = () => {
   return (
     <footer style={FooterStyle}>
-      -<h1 className="text-center text-[36px]">Simple-serveless-shopping-Demo</h1>
+      <h1 className="text-center text-[36px]">Simple-serveless-shopping-Demo</h1>
       <p className="text-center">Designed & coded by {"JayJay"}</p>
     </footer>
   );
