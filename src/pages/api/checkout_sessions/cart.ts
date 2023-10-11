@@ -49,9 +49,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json(checkoutSession);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Internal server error";
-      const statusCode = err instanceof Error ? 500 : 400; // You can set the status code based on the error type
+      const statusCode = err instanceof Error ? 500 : 400; // Set the status code based on the error type
 
-      res.status(statusCode).json({ statusCode, message: errorMessage });
+      res.status(statusCode).json({ error: { statusCode, message: errorMessage } });
     }
   } else {
     res.setHeader("Allow", "POST");
