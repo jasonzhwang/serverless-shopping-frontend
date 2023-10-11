@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         mode: "payment",
         metadata: { orderId: orderId },
       };
-
+      console.log("Before passed checkout session");
       const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.create(
         params
       );
