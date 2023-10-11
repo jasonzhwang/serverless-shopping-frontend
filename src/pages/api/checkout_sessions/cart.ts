@@ -24,9 +24,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log("order id 的值", orderId);
       // Validate the cart details that were sent from the client.
       const line_items = validateCartItems(inventory as any, cartDetails);
-      const hasSubscription = line_items.find((item: any) => {
-        return !!item.price_data.recurring;
-      });
+      // const hasSubscription = line_items.find((item: any) => {
+      //   return !!item.price_data.recurring;
+      // });
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
         submit_type: "pay",
@@ -38,14 +38,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         line_items,
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/use-shopping-cart`,
-        mode: hasSubscription ? "subscription" : "payment",
+        // mode: hasSubscription ? "subscription" : "payment",
+        mode: "payment",
         metadata: { orderId: orderId },
       };
 
       const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.create(
         params
       );
-
+      console.log("Test if passed checkout session");
       res.status(200).json(checkoutSession);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Internal server error";
