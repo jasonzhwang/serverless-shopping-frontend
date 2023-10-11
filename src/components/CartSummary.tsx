@@ -69,6 +69,7 @@ const CartSummary = () => {
 
         redirectToCheckout(response2.id);
       } catch (err) {
+        console.log(err);
         const errorMessage = err instanceof Error ? err.message : "Internal server error";
         setErrorMessage(errorMessage);
         setLoading(false);
