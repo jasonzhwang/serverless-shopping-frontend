@@ -46,40 +46,33 @@ const CartSummary = () => {
     let orderId: any;
     const postData = async () => {
       console.log("in");
-      // try {
-      const response = await fetch(
-        "https://vtosrm3fsh.execute-api.ap-southeast-2.amazonaws.com/uat/api/order/add",
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            user: `${userId}`,
-          },
-          body: JSON.stringify(orderDetail),
-        }
-      );
-      orderData = await response.json();
-      orderId = orderData ? orderData._id : "No Order ID";
-      console.log("没进去前,orderId的值", orderId);
-      console.log({ cartDetails, orderId });
-      const response2 = await fetchPostJSON("/api/checkout_sessions/cart", {
-        cartDetails,
-        orderId,
-      });
+      try {
+        const response = await fetch(
+          "https://vtosrm3fsh.execute-api.ap-southeast-2.amazonaws.com/uat/api/order/add",
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              user: `${userId}`,
+            },
+            body: JSON.stringify(orderDetail),
+          }
+        );
+        orderData = await response.json();
+        orderId = orderData ? orderData._id : "No Order ID";
+        console.log("没进去前,orderId的值", orderId);
+        console.log({ cartDetails, orderId });
+        const response2 = await fetchPostJSON("/api/checkout_sessions/cart", {
+          cartDetails,
+          orderId,
+        });
 
-      if (response2.statusCode > 399) {
-        console.error(response2.message);
-        setErrorMessage(response2.message);
+        redirectToCheckout(response2.id);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Internal server error";
+        setErrorMessage(errorMessage);
         setLoading(false);
-        return;
       }
-
-      redirectToCheckout(response2.id);
-      // } catch (err) {
-      //   const errorMessage = err instanceof Error ? err.message : "Internal server error";
-      //   setErrorMessage(errorMessage);
-      //   setLoading(false);
-      // }
     };
     postData();
   };
