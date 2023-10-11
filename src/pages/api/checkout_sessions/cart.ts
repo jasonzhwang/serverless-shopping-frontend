@@ -12,7 +12,11 @@ const { validateCartItems } = require("use-shopping-cart/utilities");
 import inventory from "../../../data/products";
 
 import Stripe from "stripe";
-if (!process.env.STRIPE_SECRET_KEY) throw new Error("process.env.STRIPE_SECRET_KEY not found");
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("process.env.STRIPE_SECRET_KEY not found");
+} else {
+  console.log(process.env.STRIPE_SECRET_KEY);
+}
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-08-01",
 });
