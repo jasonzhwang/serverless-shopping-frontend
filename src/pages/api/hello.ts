@@ -7,8 +7,8 @@ type Data = {
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   res.status(200).json({
-    name: process.env.STRIPE_SECRET_KEY
-      ? process.env.STRIPE_SECRET_KEY
+    name: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
       : "secret key can not be read",
   });
 }
