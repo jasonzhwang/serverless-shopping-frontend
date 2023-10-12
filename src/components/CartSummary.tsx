@@ -62,10 +62,13 @@ const CartSummary = () => {
         orderId = orderData ? orderData._id : "No Order ID";
         console.log("没进去前,orderId的值", orderId);
         console.log({ cartDetails, orderId });
-        const response2 = await fetchPostJSON("/api/checkout_sessions/cart", {
-          cartDetails,
-          orderId,
-        });
+        const response2 = await fetchPostJSON(
+          "https://main.d3r3s244khztwz.amplifyapp.com/api/checkout_sessions/cart",
+          {
+            cartDetails,
+            orderId,
+          }
+        );
 
         redirectToCheckout(response2.id);
       } catch (err) {
