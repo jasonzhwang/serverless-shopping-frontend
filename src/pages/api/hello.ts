@@ -6,5 +6,9 @@ type Data = {
 };
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-  res.status(200).json({ name: "John Doe" });
+  res.status(200).json({
+    name: process.env.STRIPE_SECRET_KEY
+      ? process.env.STRIPE_SECRET_KEY
+      : "secret key can not be read",
+  });
 }
